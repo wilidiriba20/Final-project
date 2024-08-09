@@ -1,5 +1,5 @@
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session,url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -9,6 +9,7 @@ db = SQL("sqlite:///user.db")
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+app.secret_key = 'w1l2'
 
 
 
@@ -25,13 +26,19 @@ def register():
         )
 
         if password != confirm:
-            return "password and confirmation are not match"
+            flash("password and confirmation are not match")
+            return redirect(url_for("register"))
+            
         elif not password:
-            return "password  is required"
+            flash("password is required")
+            return redirect(url_for("register"))
         elif not username:
-            return " name is required"
+            flash("username required")
+            return redirect(url_for("register"))
+            
         elif rows:
-            return "user name already taken"
+            flash("user name already taken")
+            return redirect(url_for("register"))
         else:
             db.execute(
                 "INSERT INTO users (username, password) VALUES (?, ?)", username, generate_password_hash(password)
@@ -49,19 +56,23 @@ def register():
 def login():
     """Log user in"""
 
-    # Forget any user_id
-    session.clear()
+
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
-            return "must provide username"
+            flash("provide username")
+            return redirect(url_for("login"))
+           
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return "must provide password"
-
+            flash("provide password")
+            return redirect(url_for("login"))
+            
+        # Forget any user_id
+        session.clear()
         # Query database for username
         rows = db.execute(
             "SELECT * FROM users WHERE username = ?", request.form.get("username")
@@ -71,7 +82,9 @@ def login():
         if len(rows) != 1 or not check_password_hash(
             rows[0]["password"], request.form.get("password")
         ):
-            return "invalid username and/or password"
+            flash("invalid username and/or password")
+            return redirect(url_for("login"))
+           
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
