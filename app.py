@@ -106,6 +106,41 @@ def logout():
 
     # Redirect user to login form
     return redirect("/login")
+@app.route("/password", methods=["GET", "POST"])
 
+def password():
+    if request.method == "GET":
+        return render_template("password.html")
+    else:
+
+        if not request.form.get("oldpassword") and not request.form.get("newpassword") and not request.form.get("username"):
+            flash("provide username , oldpassword and newpassword")
+            return redirect(url_for("password"))
+
+        # Query database for username
+        rows = db.execute(
+            "SELECT * FROM users WHERE username = ?", request.form.get("username")
+        )
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(
+            rows[0]["password"], request.form.get("oldpassword")
+        ):
+           flash("invalid username and/or old password")
+           return redirect(url_for("password"))  
+            
+        
+        else:
+            new = generate_password_hash(request.form.get('newpassword'))
+            db.execute(
+                "UPDATE users SET password = ? WHERE username = ?",
+                new, request.form.get('username')
+            )
+
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+
+        # Redirect user to home page
+        return redirect("/")
 
 
