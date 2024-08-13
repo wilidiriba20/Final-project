@@ -20,6 +20,13 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirm = request.form.get("confirmation")
+        diet = request.form.get("dite")
+        intolerance = []
+        intolerance1=["Dairy","Egg","Gluten","Grain","Peanut","Seafood"]
+        intolerance2=["Sesame","Shellfish","Soy","Sulfite","Tree Nut","Wheat"]
+        for item in intolerance1 + intolerance2:
+            if request.form.get(f"checkbox_{item}"):
+                intolerance.append(item)   
 
         rows = db.execute(
             "SELECT * FROM users WHERE username = ?", request.form.get("username")
@@ -27,7 +34,8 @@ def register():
 
         if password != confirm:
             flash("password and confirmation are not match")
-            return redirect(url_for("register"))
+            #return redirect(url_for("register"))
+            return "passwoe"
             
         elif not password:
             flash("password is required")
@@ -40,9 +48,18 @@ def register():
             flash("user name already taken")
             return redirect(url_for("register"))
         else:
-            db.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)", username, generate_password_hash(password)
-            )
+            diet= "".join(diet)
+            intolerance=", ".join(intolerance)
+            hash_password=generate_password_hash(password)
+          
+            
+           
+            values = [username, hash_password, diet, intolerance]
+
+            sql = "INSERT INTO users (username, password, diet, intolerance) VALUES (?, ?, ?, ?)"
+
+            db.execute(sql, *values)
+
             rows = db.execute(
                 "SELECT * FROM users WHERE username = ?", request.form.get("username")
             )
@@ -50,7 +67,10 @@ def register():
             return redirect("/")
 
     else:
-        return render_template("register.html")
+        dite=["Gluten Free","Ketogenic","Vegetarian","Lacto-Vegetarian","Ovo-Vegetarian","Vegan","Pescetarian","Paleo","Primal","Low FODMAP","Whole30"]
+        intolerance1=["Dairy","Egg","Gluten","Grain","Peanut","Seafood"]
+        intolerance2=["Sesame","Shellfish","Soy","Sulfite","Tree Nut","Wheat"]
+        return render_template("register.html",dite=dite,intolerance1=intolerance1,intolerance2=intolerance2)
 #end of reigster
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -144,3 +164,12 @@ def password():
         return redirect("/")
 
 
+@app.route("/k2")
+
+def k2():
+    dite=["Gluten Free","Ketogenic","Vegetarian","Lacto-Vegetarian","Ovo-Vegetarian","Vegan","Pescetarian","Paleo","Primal","Low FODMAP","Whole30"]
+    intolerance1=["Dairy","Egg","Gluten","Grain","Peanut","Seafood"]
+    intolerance2=["Sesame","Shellfish","Soy","Sulfite","Tree Nut","Wheat"]
+    return render_template("k2.html",dite=dite,intolerance1=intolerance1,intolerance2=intolerance2)
+#end of reigster
+    

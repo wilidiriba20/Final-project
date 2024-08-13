@@ -1,20 +1,131 @@
 {% extends "layout.html" %}
-
 {% block title %}
     register
 {% endblock %}
 
 {% block body %}
-    <form action="/register" method="post">
-        <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+
+<form action="/register" method="post">
+
+<section class="vh-100" style="border-radius: 15px;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-9" > 
+          
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body">
+                <h1 class="text-dark mb-4" style="font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; " >Register</h1>
+                <hr style=" border-top: 2px solid #333333;">
+  
+              <div class="row align-items-center pt-4 pb-3">
+                <div class="col-md-3 ps-5">
+  
+                  <h6 class="mb-0">username</h6>
+  
+                </div>
+                <div class="col-md-9 pe-5">
+  
+                  <input type="text" name= "username" class="form-control form-control-lg" />
+  
+                </div>
+              </div>
+              <div class="row align-items-center py-3">
+                <div class="col-md-3 ps-5">
+  
+                  <h6 class="mb-0">Dite</h6>
+  
+                </div>
+                <div class="col-md-9 pe-5">
+  
+                    <select class="form-select form-control form-control-lg" aria-label="Default select example" name="dite">
+                        {% for item in dite %}
+                        <option value="{{item}}">{{item}}</option>
+                        {% endfor %}
+                        
+                      </select>
+  
+                </div>
+              </div>
+              <div class="row align-items-center py-3  ">
+                <div class="col-md-3 ps-5">
+  
+                  <h6 class="mb-0">Intolerance</h6>
+  
+                </div>
+                <div class="col-md-9 pe-5 " style="border-radius: 10px; border-width: 1px;     border-style: solid;border-color: rgb(211, 211, 211); " >
+                    <div class="row">
+                        <div class="col-md-6"  >  
+                        {% for item in intolerance1%}
+                        <div class="form-check" style="display: flex;flex-direction: column;" >
+                            <input class="form-check-input" type="checkbox" name ="checkbox_{{ item }}" id="flexCheckDefault" value="{{item}}">
+                            <label class="form-check-label" style="margin:0;padding: 0;width: 70px;" for="flexCheckDefault">
+                              {{item}}
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        <div class="col-md-6" name="intolerance2">
+                        {% for item in intolerance2%}
+                        <div class="form-check" style="display: flex;flex-direction: column;" >
+                            <input class="form-check-input" type="checkbox" name = "checkbox_{{ item }}" id="flexCheckDefault" value="{{item}}">
+                            <label class="form-check-label" style="margin:0;padding: 0;width: 70px;" for="flexCheckDefault">
+                              {{item}}
+                            </label>
+                          </div>
+                        {% endfor %}
+
+                        </div>
+
+
+
+                        </div>
+                      
+  
+                </div>
+              </div>   
+              <div class="row align-items-center pt-4 pb-3">
+                <div class="col-md-3 ps-5">
+  
+                  <h6 class="mb-0">password</h6>
+  
+                </div>
+                <div class="col-md-9 pe-5">
+  
+                  <input type="text" name="password" class="form-control form-control-lg" type="new-password"/>
+  
+                </div>
+              </div>
+              <div class="row align-items-center pt-4 pb-3">
+                <div class="col-md-3 ps-5">
+  
+                  <h6 class="mb-0">confirmation</h6>
+  
+                </div>
+                <div class="col-md-9 pe-5">
+  
+                  <input type="text" name="confirmation" class="form-control form-control-lg" type="new-password"/>
+  
+                </div>
+              </div>
+  
+              
+            
+          
+  
+              <hr class="mx-n3">
+  
+              <div class="px-5 py-4">
+                <button type="submit" class="btn btn-dark btn-lg">Register</button>
+              </div>
+  
+            </div>
+          </div>
+  
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="password" placeholder="Password" type="new-password">
-        </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="confirmation" type="new-password">
-        </div>
-        <button class="btn btn-primary" type="submit">Register</button>
-    </form>
+      </div>
+    </div>
+  </section>
+</form>
+        
+
 {% endblock %}
