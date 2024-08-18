@@ -164,46 +164,7 @@ def password():
         # Redirect user to home page
         return redirect("/")
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    user_id = session.get("user_id")
-    from_users = db.execute("SELECT * FROM users WHERE id = :id", id=user_id)
-    print(from_users)
-    if request.method == "GET":
-        if from_users:
-            diet=from_users[0]['diet']
-            intolerance=from_users[0]['intolerance']
 
-            image_list=image(diet,intolerance)
-            print(image_list)
-            url=[]
-            
-            for urls in image_list:
-                try:
-                    url.append(urls['url'])
-                except (TypeError, KeyError, IndexError, AttributeError) as e:
-                    pass
-            return render_template("home.html",image=url)
-        else:
-            
-            return redirect("/register")
-
-    else:
-
-        if request.form.get('save'):  # Handle image saving
-            if user_id:  # Ensure user is logged in
-                save = request.form.get('save')
-                values = [user_id,save]
-
-
-                sql = "INSERT INTO save (user_id, url) VALUES (?, ?)"
-
-                db.execute(sql, *values)
-                
-                return {"success": True}, 200  # Respond to AJAX with success
-            
-        return redirect("/")
-     
 
     
 @app.route("/search", methods=["GET", "POST"])
@@ -249,22 +210,37 @@ def search():
 
 
          
-@app.route("/save")
+@app.route("/",methods=["GET", "POST"])
 def save(): 
     user_id = session.get("user_id")
-    from_save = db.execute("SELECT url FROM save WHERE user_id = :id", id=user_id)
-    saved=[]
-    print(saved)
-    for save in from_save:
-       saved.append(save['url'])
+    if user_id :
+        if request.method == "GET":
+            from_save = db.execute("SELECT url FROM save WHERE user_id = :id", id=user_id)
+            saved=[]
+            
+            for save in from_save:
+                saved.append(save['url'])
 
 
-    
-    if from_save:
-        return render_template("save.html",image=saved)
-    else: 
-        return render_template("save.html")
+            
+            if from_save:
+                return render_template("save.html",image=saved)
+            else: 
+                return render_template("save.html")
+        else:
+            delete = request.form.get('delete')
+           
 
-      
 
-    
+            db.execute("DELETE FROM save WHERE url= ?",delete)
+            return redirect("/")
+
+             
+
+    else:
+        return redirect("/register")
+
+
+        
+
+        

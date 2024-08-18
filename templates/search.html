@@ -13,20 +13,19 @@ search
 <br>
 
 <table class="table">
-   
    <tbody>
        {% for img in image %}
        <tr>
-           <th class="transparent-col"><form class="save-image-form" method="post" style="display: inline;">
-            <input type="hidden" class="save" name="save" value="{{ img }}">
-            <button class="btn btn-primary btn-lg" type="submit">Save</button>
-        </form>
-      </th>
+           <th class="transparent-col">
+               <form class="save-image-form" method="post" style="display: inline;">
+                   <input type="hidden" class="save" name="save" value="{{ img }}">
+                   <button class="btn btn-primary btn-lg save-button" type="submit">Save</button>
+               </form>
+           </th>
            <td>
-            <img class="img-fluid" src="{{ img }}" alt="recipe Image">
-         </td>
+               <img class="img-fluid" src="{{ img }}" alt="recipe Image">
+           </td>
        </tr>
-       
        {% endfor %}
    </tbody>
 </table>
@@ -36,17 +35,23 @@ search
    $(document).ready(function() {
       $('.save-image-form').submit(function(event) {
          event.preventDefault();
-         
-         // Correct selector to the current form
+
          const form = $(this); // 'this' refers to the current form
+         const button = form.find('.save-button'); // Find the button within the current form
          
          $.ajax({
             type: 'POST',
             url: '/search',
-            data: form.serialize(), // Serialize the correct form
-            
+            data: form.serialize(),
+            success: function(response) { // Assuming you are returning a response from the server
+                button.text('Saved'); // Change button text to 'Saved'
+                button.prop('disabled', true); // Disable the button
+                button.removeClass('btn-primary'); // Optional: remove primary style
+                button.addClass('btn-success'); // Optional: change to success style
+            }
          });
       });
    });
 </script>
-{%endblock%}
+
+{% endblock %}

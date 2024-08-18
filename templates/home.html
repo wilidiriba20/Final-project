@@ -11,7 +11,8 @@
     <tbody>
         {% for img in image %}
         <tr>
-            <th class="transparent-col"><form class="save-image-form" method="post" style="display: inline;">
+            <th class="transparent-col">
+            <form class="save-image-form" method="post" style="display: inline;">
              <input type="hidden" class="save" name="save" value="{{ img }}">
              <button class="btn btn-primary btn-lg" type="submit">Save</button>
          </form>

@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block body %}
+{% if  image %}
     
 <table class="table">
     <thead class="thead-dark">
         <tr>
             <th scope="col" >#</th>
             <th scope="col">Saved Recipe</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,11 +22,17 @@
             <td>
                 <img class="img-fluid" src="{{ img }}" alt="recipe Image">
             </td>
+            <td>
+                <form  method="post" action="/" style="display: inline;">
+                    <input type="hidden" class="delete" name="delete" value="{{ img }}">
+                    <button class="btn btn-primary btn-lg" type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
+{% endif %}
 {% if not image %}
 <h1 style="color: white;"><b>😱</b> NO saved recipe</h1>
 <br>
