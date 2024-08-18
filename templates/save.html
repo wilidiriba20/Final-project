@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    home
+{% endblock %}
+
+{% block body %}
+    
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" >#</th>
+            <th scope="col">Saved Recipe</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for img in image %}
+        <tr>
+            <th class="transparent-col">{{ loop.index }}</th>
+            <td>
+                <img class="img-fluid" src="{{ img }}" alt="recipe Image">
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if not image %}
+<h1 style="color: white;"><b>😱</b> NO saved recipe</h1>
+<br>
+<h1 style="color: white;"><b>😱</b> NO saved recipe</h1>
+<br>
+<h1 style="color: white;"><b>😱</b> NO saved recipe</h1>
+{% endif %}
+
+<style>
+    .table th, .table td {
+        padding: 15px; /* Padding for cell content */
+    }
+
+    .transparent-col {
+        font-size: 100px;
+         /* Optional: remove borders for a cleaner look */
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        margin: 10px; /* Space around the image */
+    }
+</style>
+
+{% endblock %}
