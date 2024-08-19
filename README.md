@@ -39,18 +39,6 @@ password.html: Allows users to change their passwords with verification checks.
 ###4. static/
 contain images
 
-Design Choices
-Security
-Security was a priority in this project. User passwords are securely hashed using Werkzeug's generate_password_hash function to prevent exposure in case of a data breach. The application also employs session management for maintaining user authentication, allowing users to remain logged in across multiple interactions.
 
-User Experience
-The decision to make dietary preferences customizable enhances user experience significantly. By offering a selection of intolerances and diets, the application ensures that users can find recipes tailored specifically to their needs. The choice of using AJAX for saving recipes allows for smooth interactions without page reloads, creating a seamless experience when saving or unsaving recipes.
-
-Scalability
-The application utilizes a SQLite database for simplicity during development. However, given that Flask can easily transition to other databases such as PostgreSQL or MySQL, the app is designed to scale up if required.
-
-API Interaction
-Using an external recipe API (Spoonacular) saves time on managing recipe data while providing rich content for users. API responses are parsed and presented in a user-friendly format, ensuring that users receive relevant recipe images and instructions.
-
-Conclusion
+###Conclusion
 This Flask-based web application serves as a comprehensive tool for users looking to manage their dietary preferences and discover new recipes. Through secure handling of user data, an intuitive interface, and the power of an external API, it provides a valuable resource for anyone interested in cooking while adhering to specific dietary restrictions. As this project evolves, new features like user reviews of recipes, advanced search filters, and enhanced aesthetic designs could further improve engagement and usability.
