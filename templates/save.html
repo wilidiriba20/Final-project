@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    home
+    save
 {% endblock %}
 
 {% block body %}
@@ -23,7 +23,7 @@
                 <img class="img-fluid" src="{{ img }}" alt="recipe Image">
             </td>
             <td>
-                <form  method="post" action="/" style="display: inline;">
+                <form  method="post" action="/save" style="display: inline;">
                     <input type="hidden" class="delete" name="delete" value="{{ img }}">
                     <button class="btn btn-primary btn-lg" type="submit">Delete</button>
                 </form>

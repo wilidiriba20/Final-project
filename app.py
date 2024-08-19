@@ -73,6 +73,9 @@ def register():
         intolerance2=["Sesame","Shellfish","Soy","Sulfite","Tree Nut","Wheat"]
         return render_template("register.html",dite=dite,intolerance1=intolerance1,intolerance2=intolerance2)
 #end of reigster
+
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -167,20 +170,24 @@ def password():
 
 
     
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def search():
     user_id = session.get("user_id")
     from_users = db.execute("SELECT * FROM users WHERE id = :id", id=user_id)
     
     if request.method == "POST":
-        if request.form.get("query"):  # Handle search query
+        if request.form.get("query"): 
+ # Handle search query
             if from_users:
+
                 diet = from_users[0]['diet']
                 intolerance = from_users[0]['intolerance']
                 query = request.form.get("query")
 
                 image_list = image(diet, intolerance, query)
+                
                 images = []
+                
 
                 for img in image_list:                
                     try:
@@ -203,19 +210,20 @@ def search():
                 db.execute(sql, *values)
                 
                 return {"success": True}, 200  # Respond to AJAX with success
-            
-    return render_template("search.html")  # Render the search page for GET requests
+    else:        
+        return render_template("search.html")  # Render the search page for GET requests
          
 
 
 
          
-@app.route("/",methods=["GET", "POST"])
+@app.route("/save",methods=["GET", "POST"])
 def save(): 
     user_id = session.get("user_id")
-    if user_id :
-        if request.method == "GET":
-            from_save = db.execute("SELECT url FROM save WHERE user_id = :id", id=user_id)
+    from_save = db.execute("SELECT url FROM save WHERE user_id = :id", id=user_id)
+
+    if request.method == "GET":
+        if user_id :
             saved=[]
             
             for save in from_save:
@@ -228,17 +236,15 @@ def save():
             else: 
                 return render_template("save.html")
         else:
-            delete = request.form.get('delete')
-           
-
-
-            db.execute("DELETE FROM save WHERE url= ?",delete)
-            return redirect("/")
-
-             
-
+            return redirect("/register")
+        
     else:
-        return redirect("/register")
+        delete = request.form.get('delete')
+           
+        db.execute("DELETE FROM save WHERE url= ?",delete)
+        return redirect("/save")       
+
+    
 
 
         

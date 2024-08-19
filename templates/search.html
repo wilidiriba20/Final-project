@@ -5,7 +5,7 @@ search
 {% endblock %}
 
 {% block body %}
-<form method="POST" action="/search" style="display: flex; align-items: center; justify-content: center;">
+<form method="POST" action="/" style="display: flex; align-items: center; justify-content: center;">
     <input type="text" name="query" style="padding: 15px; width: 60%; font-weight: bold; height: 50px; margin: 0 5px;">
     <button type="submit" class="btn btn-primary" style="padding: 15px; height: 50px; margin: 0 5px; justify-content: center;"><b>search</b></button>
 </form>
@@ -41,7 +41,7 @@ search
          
          $.ajax({
             type: 'POST',
-            url: '/search',
+            url: '/',
             data: form.serialize(),
             success: function(response) { // Assuming you are returning a response from the server
                 button.text('Saved'); // Change button text to 'Saved'
